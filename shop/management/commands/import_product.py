@@ -24,53 +24,55 @@ class Command(BaseCommand):
         """
 
         check_goods = False
-        file = open('myshop.csv', 'r')
-        product = Product.objects.all()
-        for line in file:
-            arr = line.split(';')
-            for p in product:
-                print(p.name)
-                if arr[0] == p.name:
-                    print('Совпало')
-                    check_goods = True
+        file = open('newshop.txt', 'r')# открывает файл
+        product = Product.objects.all()#получает объекты из модели
+        for line in file:#пробегает по строкам из файла
+            line.strip('\n')
+            arr = line.split(';')#разделяет строку, испльзуя разделитель ;
+            for p in product:# пробегает по массиву объектов, полученных из модели, для поиска совпадений объектов модели и выбранного наименования из файла.
+                if int(arr[0]) == p.articul:  # сравнивает выбраное имя из файла и имя из массива модели.
+                    check_goods = True  # если есть совпадение, переключаем, для перехода во внешний цикл, не заходя в следующее условие
             if not check_goods:
-                print('check')
-                creator(arr[9])
+                create_category(arr[0], arr[1], arr[2], arr[3], arr[4], arr[5])
             check_goods = False
             #print(arr[1])
         #file.close()
-
-
         self.stdout.write('Successfully')
 
 
 
-def creator(category_name):
+def create_category(pr_artcl, pr_nm, category_name, pr_slg, ct_slg, pr_prc):
     category = Category.objects.all()
     for c in category:
-        print(c.name)
-        print(category_name)
         if c.name == category_name:
-            print( c.name)
-            print('Мониторы+Тв')
-            print('from for category ravno')
-        else:
-            print(c.name)
-            print(category_name)
-            print('from for category ne ravno')
-    #    category.name = 'Электровеники'
-    #    category.slug = 'myvenik'
-    #    category.save()
-#
-    #product = Product()
-    #product.name = 'test1'
-    #product.slug = 'mytest'
-    #product.price = 100
-    #product.stock = 12
-    #product.available = True
-    #product.category = category
-    #product.save()
-    #self.stdout.write('From creator')
+            create_prod(pr_artcl, pr_nm, c, pr_slg, pr_prc)
+    my_category = Category()
+    my_category.name = category_name
+    my_category.slug = ct_slg
+    my_category.save()
+    create_prod(pr_artcl, pr_nm, my_category, pr_slg, pr_prc)
+
+
+def create_prod(pr_articul, pr_name, pr_category, pr_slug, pr_price):
+    print('prod')
+    product = Product()
+    product.articul = pr_articul
+    product.name = pr_name
+    product.category = pr_category
+    product.slug = pr_slug
+    product.price = float(pr_price)
+    product.stock = 0
+    product.available = True
+    product.save()
+    print('From create_prod')
+
+
+
+
+
+
+
+
 
 
             # Пример как создаётся (сохраняется) категория
