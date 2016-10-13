@@ -24,57 +24,44 @@ class Command(BaseCommand):
         """
 
 
-        check_goods = False
+
+        print('Начало модуля**************************************************')
+        print('Начало модуля**************************************************')
+        print('Начало модуля**************************************************')
         product = Product.objects.all()
-        f = open('mytest.txt')
+        f = open('newshop.txt')
         for line in f.readlines():
-            print('зашли во внешний цикл')
-            print(line)
+            check_goods = False
             arr = line.strip().split(';')
             arr[0] = int(arr[0])
             arr[5] = int(arr[5])
             for prod in product:
-                print('зашли во внутренний цикл')
-                print(arr[0])
                 if arr[0] == prod.articul:#если продукт с таким артикулом найден, то меняем цену
-                    print('равно')
-                    print(prod.articul)
-                    print(prod.price)
                     prod.price = arr[5]
                     prod.save()
                     check_goods = True
-                    print(prod.price)
-            if not check_goods :#иначе добавляем позицию в базу данных, предварительно проверив существует ли данная категория
+
+            if not check_goods:
                 check_goods = True
                 create_category(arr)
-                print('не равно')
-                print('вышли из внутреннего цикла')
-                print('________________________')
-            check_goods = False
-            print('вышли из внешнего цикла')
-            print('________________________')
 
 
 
 
 def create_category(myarr):
     check_cat = False
-    print('зашли в метод категорий')
-    print(myarr[2])
     category = Category.objects.all()
     if len(category) == 0:
-        print(len(category))
         create_cat(myarr)
-        print(len(category))
+
     for cat in category:
         if myarr[2] == cat.name and not check_cat:
-            print('есть такая категория!')
             check_cat = True
-            #myarr[2] = cat.name
             create_prod(myarr, cat)
-        if myarr[2] != cat.name and not check_cat:
+            #myarr[2] = cat.name
+
+    if not check_cat:
             check_cat = True
-            print('нет такой категории!')
             create_cat(myarr)
 
 
