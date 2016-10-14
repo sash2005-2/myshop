@@ -10,6 +10,12 @@ def product_list(request, category_slug=None):
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)
         products = products.filter(category=category)
+        for p in products:
+            if len(p.name) > 50:
+                p.name = p.name[0:45]+'...'
+            else:
+                p.name = p.name.ljust(45, ".")
+
     return render(request, 'shop/product/list.html', {'category': category,
                                                       'categories': categories,
                                                       'products': products})
@@ -46,6 +52,8 @@ def index(request, category_slug=None):
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)
         products = products.filter(category=category)
+        if len(products) > 100:
+            products = products[100]
     return render(request, 'index.html', {'category': category,
                                                       'categories': categories,
                                                       'products': products})

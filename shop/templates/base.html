@@ -41,17 +41,37 @@
 <div id="hor_menu">
     <nav role='navigation'>
         <ul>
-            <!--
-            <li><a href="#">Комплектующие</a></li>
-            <li><a href="#">Телефоны</a></li>
-            <li><a href="#">Бытовая техника</a></li>
-            <li><a href="#">Фото</a></li>
-            <li><a href="#">Гаджеты</a></li>-->
-            {% for c in categories %}
-                <li {% if category.slug == c.slug %}class="selected"{% endif %}>
-                    <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
-                </li>
-            {% endfor %}
+            <li><a href="#">О компании</a>
+                <!-- <ul>
+                    {% for c in categories %}
+                        <li {% if category.slug == c.slug %}class="selected"{% endif %}>
+                            <a href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>-->
+            </li>
+            <li>
+                <a href="#">Главная</a>
+            </li>
+            <li>
+                <a href="#">Контакты</a>
+            </li>
+            <li>
+                <a href="#">Покупателю</a>
+                <ul>
+                    <li>
+                        <a href="#">Как купить</a></li>
+                    <li>
+                        <a href="#">Гарантия</a>
+                    </li>
+                    <li>
+                        <a href="#">Доставка</a>
+                    </li>
+                    <li>
+                        <a href="#">Оплата</a>
+                    </li>
+                </ul>
+            </li>
         </ul>
     </nav>
 </div>

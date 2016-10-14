@@ -26,13 +26,18 @@ class Command(BaseCommand):
 
 
         print('Начало модуля**************************************************')
-        print('Начало модуля**************************************************')
-        print('Начало модуля**************************************************')
+        count = 0
         product = Product.objects.all()
         f = open('newshop.txt')
         for line in f.readlines():
+            count += 1
+            print(count)
             check_goods = False
             arr = line.strip().split(';')
+            if len(arr[1]) > 200:
+                arr[1] = arr[1][0:200]
+            if len(arr[3]) > 100:
+                arr[3] = arr[3][0:100]
             arr[0] = int(arr[0])
             arr[5] = int(arr[5])
             for prod in product:
@@ -40,10 +45,15 @@ class Command(BaseCommand):
                     prod.price = arr[5]
                     prod.save()
                     check_goods = True
+                    print("Change price")
 
             if not check_goods:
                 check_goods = True
                 create_category(arr)
+                print('Add goods')
+
+        f.close()
+        print('Finished successfull')
 
 
 
@@ -51,8 +61,8 @@ class Command(BaseCommand):
 def create_category(myarr):
     check_cat = False
     category = Category.objects.all()
-    if len(category) == 0:
-        create_cat(myarr)
+    #if len(category) == 0:
+    #    create_cat(myarr)
 
     for cat in category:
         if myarr[2] == cat.name and not check_cat:
@@ -74,14 +84,13 @@ def create_cat(myarr_cat):
 
 
 def create_prod(myarr_pr, categor):
-    print('prod')
     product = Product()
     product.articul = myarr_pr[0]
     product.name = myarr_pr[1]
     product.category = categor
     product.slug = myarr_pr[3]#Необходимо провверять slug на дубли
+    product.description = myarr_pr[6]
     product.stock = 0
     product.price = myarr_pr[5]
     product.available = True
     product.save()
-    print('From create_prod')
