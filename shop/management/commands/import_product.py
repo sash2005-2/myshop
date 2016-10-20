@@ -34,15 +34,15 @@ class Command(BaseCommand):
             print(count)
             check_goods = False
             arr = line.strip().split(';')
-            if len(arr[1]) > 200:
-                arr[1] = arr[1][0:200]
-            if len(arr[3]) > 100:
-                arr[3] = arr[3][0:100]
-            arr[0] = int(arr[0])
-            arr[5] = int(arr[5])
+            if len(arr[4]) > 200:
+                arr[4] = arr[4][0:200]
+            if len(arr[4]) > 100:
+                arr[4] = arr[4][0:100]
+            arr[1] = int(arr[1])
+            arr[3] = int(arr[3])
             for prod in product:
-                if arr[0] == prod.articul:#если продукт с таким артикулом найден, то меняем цену
-                    prod.price = arr[5]
+                if arr[1] == prod.articul:#если продукт с таким артикулом найден, то меняем цену
+                    prod.price = arr[3]
                     prod.save()
                     check_goods = True
                     print("Change price")
@@ -65,7 +65,7 @@ def create_category(myarr):
     #    create_cat(myarr)
 
     for cat in category:
-        if myarr[2] == cat.name and not check_cat:
+        if myarr[4] == cat.name and not check_cat:
             check_cat = True
             create_prod(myarr, cat)
             #myarr[2] = cat.name
@@ -77,20 +77,20 @@ def create_category(myarr):
 
 def create_cat(myarr_cat):
     category = Category()
-    category.name = myarr_cat[2]
-    category.slug = myarr_cat[4]#Необходимо провверять slug на дубли
+    category.name = myarr_cat[0]
+    category.slug = myarr_cat[0]#Необходимо провверять slug на дубли
     category.save()
     create_prod(myarr_cat, category)
 
 
 def create_prod(myarr_pr, categor):
     product = Product()
-    product.articul = myarr_pr[0]
-    product.name = myarr_pr[1]
+    product.articul = myarr_pr[1]
+    product.name = myarr_pr[4]
     product.category = categor
-    product.slug = myarr_pr[3]#Необходимо провверять slug на дубли
-    product.description = myarr_pr[6]
+    product.slug = myarr_pr[4]#Необходимо провверять slug на дубли
+    product.description = myarr_pr[2]
     product.stock = 0
-    product.price = myarr_pr[5]
+    product.price = myarr_pr[3]
     product.available = True
     product.save()
